@@ -54,21 +54,17 @@ public class MainScreen {
         arrJComponent.add(label);
     }
 
-    public void addStatus(int x , int y , int width , int height)
+    public void addStatus(int x , int y , int width , int height, boolean statusWifi)
     {
         JLabel label = new JLabel("Status");
         label.setBounds(x , y , width , height);
 
         circleStatus = new Circle(x + width /2,y + height/2 - 4,10,10);
+        circleStatus.updateColorByStatusWifi(statusWifi);
 
         //add label, circle
         arrJComponent.add(label);
         arrJComponent.add(circleStatus);
-    }
-
-    public void changeColorStatus()
-    {
-        this.circleStatus.changeColor();
     }
 
     public void repaint()
@@ -87,11 +83,10 @@ public class MainScreen {
             this.height = height;
         }
 
-        public void changeColor()
-        {
-            if(this.color.equals(Color.black))
-                this.color = Color.GREEN;
+        public void updateColorByStatusWifi(boolean statusWifi) {
+            if(statusWifi) this.color = Color.GREEN;
             else this.color = Color.BLACK;
+            System.out.println(statusWifi);
         }
 
         @Override
@@ -100,5 +95,7 @@ public class MainScreen {
             g.fillOval(x + width /2,y + height/2 - 4,10,10);
             super.paint(g);
         }
+
+
     }
 }
