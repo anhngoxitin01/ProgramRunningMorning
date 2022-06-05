@@ -2,6 +2,7 @@ package Screen;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.Flow;
 
@@ -9,6 +10,7 @@ public class MainScreen {
     private JFrame f = new JFrame();
     private Panel panel = new Panel();
     ArrayList<JComponent> arrJComponent = new ArrayList<>();
+    private Circle circleStatus;
 
     public void createScreen(String title , int sizeX , int sizeY)
     {
@@ -33,11 +35,12 @@ public class MainScreen {
 
     }
 
-    public void addBtn(String title , int x , int y , int width , int height)
+    public void addBtn(String title , int x , int y , int width , int height , ActionListener al)
     {
         JButton btn = new JButton();
         btn.setBounds(x , y,width , height);
         btn.setText(title);
+        btn.addActionListener(al);
 
         //add button
         arrJComponent.add(btn);
@@ -56,17 +59,46 @@ public class MainScreen {
         JLabel label = new JLabel("Status");
         label.setBounds(x , y , width , height);
 
-        JComponent circle = new JComponent() {
-            @Override
-            public void paint(Graphics g) {
-                g.setColor(Color.BLACK);
-                g.fillOval(x + width /2,y + height/2 - 4,10,10);
-                super.paint(g);
-            }
-        };
+        circleStatus = new Circle(x + width /2,y + height/2 - 4,10,10);
 
         //add label, circle
         arrJComponent.add(label);
-        arrJComponent.add(circle);
+        arrJComponent.add(circleStatus);
+    }
+
+    public void changeColorStatus()
+    {
+        this.circleStatus.changeColor();
+    }
+
+    public void repaint()
+    {
+        this.f.repaint();
+    }
+
+    public class Circle extends JComponent{
+        private int x , y , width , height;
+        public Color color = Color.BLACK;
+        Circle(int x , int y, int width , int height)
+        {
+            this.x = x;
+            this.y = y;
+            this.width = width;
+            this.height = height;
+        }
+
+        public void changeColor()
+        {
+            if(this.color.equals(Color.black))
+                this.color = Color.GREEN;
+            else this.color = Color.BLACK;
+        }
+
+        @Override
+        public void paint(Graphics g) {
+            g.setColor(color);
+            g.fillOval(x + width /2,y + height/2 - 4,10,10);
+            super.paint(g);
+        }
     }
 }
